@@ -165,6 +165,11 @@ onMounted(async () => {
   await library.setup();
 
   if (isDesktop) {
+    // 文件关联双击 / 命令行打开：消费启动参数，并监听单实例转发（复用拖拽的打开逻辑）
+    const launch = await bridge.takeLaunchPaths();
+    if (launch.length) await handleDroppedPaths(launch);
+    void bridge.onOpenFromArgs((paths) => void handleDroppedPaths(paths));
+
     const unlisten = await getCurrentWebview().onDragDropEvent((event) => {
       if (event.payload.type === "enter" || event.payload.type === "over") {
         dragOver.value = true;

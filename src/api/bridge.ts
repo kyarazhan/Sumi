@@ -1,4 +1,5 @@
 import { invoke, convertFileSrc } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { readDir, readFile, readTextFile, watch } from "@tauri-apps/plugin-fs";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -33,6 +34,10 @@ export interface Bridge {
   /** 本地绝对路径 → 可嵌入 img/video 的 URL（asset 协议） */
   fileUrl(absPath: string): string;
   watchPaths(paths: string[], onChange: (paths: string[]) => void): Promise<WatchHandle>;
+  /** 取走启动参数中的待打开路径（文件关联双击 / 命令行），一次性，仅桌面端有值 */
+  takeLaunchPaths(): Promise<string[]>;
+  /** 监听单实例插件转发来的打开路径（重复双击文档时由运行中的实例接收） */
+  onOpenFromArgs(handler: (paths: string[]) => void): Promise<void>;
 }
 
 export const isDesktop = "__TAURI_INTERNALS__" in window;
@@ -165,6 +170,12 @@ const tauriBridge: Bridge = {
       { recursive: true },
     );
     return { close: () => unwatch() };
+  },
+
+  takeLaunchPaths: () => invoke<string[]>("take_launch_paths"),
+
+  async onOpenFromArgs(handler: (paths: string[]) => void) {
+    await listen<string[]>("open-from-args", (e) => handler(e.payload));
   },
 };
 

@@ -110,5 +110,13 @@ export function createMockBridge(): Bridge {
     async watchPaths() {
       return noopWatch;
     },
+
+    async takeLaunchPaths() {
+      return [];
+    },
+
+    async onOpenFromArgs() {
+      /* 浏览器模式无单实例转发 */
+    },
   };
 }
