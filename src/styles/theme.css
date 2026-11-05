@@ -1,0 +1,151 @@
+/* 主题变量体系 —— 扩展点：新增主题只需复制一组变量块 */
+
+:root,
+[data-theme="github-light"] {
+  --bg: #ffffff;
+  --bg-soft: #f6f8fa;
+  --fg: #1f2328;
+  --fg-strong: #0550ae;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --border-soft: #e7ebef;
+  --accent: #0969da;
+  --accent-soft: #ddf4ff;
+  --code-bg: #f6f8fa;
+  --code-border: #d0d7de;
+  --quote-fg: #656d76;
+  --mark-bg: #fff8c5;
+  --sidebar-bg: #f6f8fa;
+  --hover-bg: #eaeef2;
+  --active-bg: #dbe6f8;
+  --shadow: rgba(31, 35, 40, 0.15);
+  --danger: #cf222e;
+  --search-hl: rgba(255, 220, 90, 0.55);
+  --search-hl-active: rgba(255, 170, 0, 0.65);
+}
+
+[data-theme="github-dark"] {
+  --bg: #0d1117;
+  --bg-soft: #161b22;
+  --fg: #e6edf3;
+  --fg-strong: #4493f8;
+  --muted: #8b949e;
+  --border: #30363d;
+  --border-soft: #21262d;
+  --accent: #2f81f7;
+  --accent-soft: #121d2f;
+  --code-bg: #161b22;
+  --code-border: #30363d;
+  --quote-fg: #8b949e;
+  --mark-bg: #63471b;
+  --sidebar-bg: #010409;
+  --hover-bg: #1f2730;
+  --active-bg: #1c2a44;
+  --shadow: rgba(1, 4, 9, 0.6);
+  --danger: #f85149;
+  --search-hl: rgba(187, 128, 9, 0.45);
+  --search-hl-active: rgba(255, 180, 30, 0.6);
+}
+
+[data-theme="sepia"] {
+  --bg: #f4ecd8;
+  --bg-soft: #ece1c4;
+  --fg: #4a4238;
+  --fg-strong: #84592b;
+  --muted: #948b7a;
+  --border: #d9ccb0;
+  --border-soft: #e5d9be;
+  --accent: #9a6a33;
+  --accent-soft: #e8d9b8;
+  --code-bg: #efe6cd;
+  --code-border: #d9ccb0;
+  --quote-fg: #948b7a;
+  --mark-bg: #ffe9a8;
+  --sidebar-bg: #ece1c4;
+  --hover-bg: #e2d5b4;
+  --active-bg: #e8d3a3;
+  --shadow: rgba(74, 66, 56, 0.18);
+  --danger: #a4321f;
+  --search-hl: rgba(235, 180, 60, 0.5);
+  --search-hl-active: rgba(220, 140, 20, 0.7);
+}
+
+[data-theme="solar-light"] {
+  --bg: #fdf6e3;
+  --bg-soft: #f5eedb;
+  --fg: #586e75;
+  --fg-strong: #268bd2;
+  --muted: #93a1a1;
+  --border: #e2dac5;
+  --border-soft: #ece5d3;
+  --accent: #268bd2;
+  --accent-soft: #e4edf1;
+  --code-bg: #f5eedb;
+  --code-border: #e2dac5;
+  --quote-fg: #93a1a1;
+  --mark-bg: #f2e6b8;
+  --sidebar-bg: #f5eedb;
+  --hover-bg: #eadfc8;
+  --active-bg: #dcd3b4;
+  --shadow: rgba(88, 110, 117, 0.18);
+  --danger: #dc322f;
+  --search-hl: rgba(181, 137, 0, 0.4);
+  --search-hl-active: rgba(203, 75, 22, 0.5);
+}
+
+[data-theme="solar-dark"] {
+  --bg: #002b36;
+  --bg-soft: #073642;
+  --fg: #b5c3c6;
+  --fg-strong: #268bd2;
+  --muted: #7c9296;
+  --border: #0e4652;
+  --border-soft: #0a3d49;
+  --accent: #268bd2;
+  --accent-soft: #0e3b4d;
+  --code-bg: #073642;
+  --code-border: #0e4652;
+  --quote-fg: #7c9296;
+  --mark-bg: #52532b;
+  --sidebar-bg: #012129;
+  --hover-bg: #0e4652;
+  --active-bg: #114a58;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --danger: #dc322f;
+  --search-hl: rgba(181, 137, 0, 0.4);
+  --search-hl-active: rgba(203, 75, 22, 0.6);
+}
+
+[data-theme="one-dark"] {
+  --bg: #282c34;
+  --bg-soft: #21252b;
+  --fg: #abb2bf;
+  --fg-strong: #61afef;
+  --muted: #7f848e;
+  --border: #3e4451;
+  --border-soft: #2f333d;
+  --accent: #61afef;
+  --accent-soft: #2c3440;
+  --code-bg: #21252b;
+  --code-border: #3e4451;
+  --quote-fg: #7f848e;
+  --mark-bg: #4e3d24;
+  --sidebar-bg: #1b1f25;
+  --hover-bg: #333842;
+  --active-bg: #2c3e50;
+  --shadow: rgba(0, 0, 0, 0.45);
+  --danger: #e06c75;
+  --search-hl: rgba(209, 154, 102, 0.35);
+  --search-hl-active: rgba(229, 192, 123, 0.55);
+}
+
+/* 搜索高亮（CSS Custom Highlight API） */
+::highlight(mdr-search) {
+  background-color: var(--search-hl);
+  color: inherit;
+}
+::highlight(mdr-search-active) {
+  background-color: var(--search-hl-active);
+  color: inherit;
+  text-decoration: underline;
+}

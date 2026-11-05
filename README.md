@@ -1,0 +1,110 @@
+# 墨阅 Sumi
+
+一款轻量级 Markdown 桌面阅读器与文档库。基于 **Tauri 2 + Vue 3 + TypeScript** 构建，安装包仅约 3MB。
+
+## 功能
+
+### 三种视图（文档栏一键切换）
+- **阅读**：纯预览，沉浸阅读
+- **分栏**：左侧实时预览、右侧编辑（编辑栏紧邻大纲面板），中间分隔条可拖拽调宽
+- **编辑**：全屏编辑视图
+
+### 编辑器
+- 完整工具栏：保存/撤销/重做、H1~H3 标题、粗体/斜体/删除线/行内代码/高亮、引用/无序/有序/任务列表、代码块/表格/分割线/脚注、链接/本地图片/行内公式/块级公式/Mermaid
+- 编辑器字体（等宽/无衬线/衬线）与字号可调，自动换行开关
+- 实时预览渲染（200ms 防抖），分栏滚动同步（可开关）
+- 保存：`Ctrl+S` 手动保存 + 停止输入 1.5 秒自动保存（可关）；切换文档前未保存草稿自动落盘
+- 列表自动续行（回车生成下一项/递增序号）、Tab 缩进 / Shift+Tab 反缩进
+- 插入本地图片自动复制到文档旁 `assets/` 目录并使用相对路径
+- 保存状态实时显示（编辑中/保存中/已保存 HH:mm:ss）
+- 文件监听防回环：自己保存的变更不会触发覆盖重载
+
+### 文档库
+- 多文件夹书架，随时切换
+- 文件树导航（自动隐藏 `node_modules`、`.git` 等无关目录）
+- 最近打开、收藏置顶
+- 每篇文档的阅读进度记忆（重开恢复位置）
+- 文件夹/文件拖入窗口即可打开
+- 文件变更自动刷新（外部编辑后重新渲染）
+
+### 阅读体验
+- 大纲（TOC）+ 滚动联动高亮（编辑模式下跟随草稿实时更新）
+- 7 套主题：GitHub 浅色/深色、羊皮纸、Solarized 浅色/深色、One Dark、跟随系统
+- 字体（无衬线/衬线）、字号、行距、页宽可调
+- 字数统计与预估阅读时长
+
+### 渲染增强（均可在设置中开关）
+| 能力 | 实现 |
+| --- | --- |
+| GFM 表格 / 任务列表 / 删除线 / 脚注 | markdown-it + 插件 |
+| 代码语法高亮 + 一键复制 | highlight.js |
+| 数学公式（`$行内$`、`$$块级$$`） | KaTeX |
+| Mermaid 图表 | mermaid（异步渲染，失败回退源码） |
+| 标题锚点 + 文内跳转 | markdown-it-anchor |
+
+### 搜索
+- `Ctrl+Shift+F`：书架全文搜索（Rust 原生遍历，标题 + 正文，带上下文摘要）
+- `Ctrl+F`：当前文档内搜索（CSS Custom Highlight API 高亮，Enter 循环跳转）
+
+### 导出
+- `Ctrl+E`：导出独立单文件 HTML（本地图片自动 base64 内嵌、内联当前主题样式）
+- `Ctrl+P`：打印 / 另存为 PDF（专用打印样式，隐藏界面元素）
+
+## 快捷键
+
+| 快捷键 | 功能 |
+| --- | --- |
+| `Ctrl+O` | 添加文件夹到书架 |
+| `Ctrl+Shift+O` | 打开单个文件 |
+| `Ctrl+S` | 保存（编辑器内） |
+| `Ctrl+B` / `Ctrl+I` | 粗体 / 斜体（编辑器内）；非编辑器内为收起侧栏 |
+| `Ctrl+K` | 插入链接（编辑器内） |
+| `Tab` / `Shift+Tab` | 缩进 / 反缩进（编辑器内） |
+| `Ctrl+M` | 收起/展开大纲 |
+| `Ctrl+Shift+M` | 大纲停靠位置切换（左/右） |
+| `Ctrl+F` | 文档内搜索 |
+| `Ctrl+Shift+F` | 书架全文搜索 |
+| `Ctrl+E` | 导出 HTML |
+| `Ctrl+P` | 打印 / 另存为 PDF |
+| `Esc` | 关闭浮层 |
+
+## 开发
+
+```bash
+npm install
+npm run dev:tauri   # 桌面开发模式
+npm run dev         # 仅前端（浏览器调试模式，内置示例文档库）
+npm run build:tauri # 打包安装包（NSIS）
+```
+
+### 纯浏览器调试模式
+
+前端所有系统能力经由 `src/api/bridge.ts` 平台抽象层调用，浏览器环境自动降级为
+内存示例库（`src/samples/sampleLibrary.ts`），渲染、搜索、导出等逻辑无需 Tauri 即可调试。
+
+### 架构
+
+```
+src/
+├── api/          # 平台抽象层（Tauri / 浏览器 mock 双实现）
+├── markdown/     # 渲染引擎工厂 + 插件注册表（核心扩展点）
+├── stores/       # Pinia：ui / settings / library / viewer
+├── composables/  # 快捷键 / 导出 / 文档内搜索
+├── components/   # TopBar / Sidebar / Viewer / Search / Dialogs
+└── styles/       # 主题变量体系 + 布局 + 阅读排版 + 打印样式
+src-tauri/
+└── src/commands/ # full_text_search / write_text_file
+```
+
+### 扩展
+
+- **新增渲染能力**：`src/api/types.ts` 的 `RenderOptions` 加开关 → `src/markdown/index.ts`
+  注册插件 → 设置面板 `RENDER_LABELS` 加一行
+- **新增主题**：`src/styles/theme.css` 复制一组变量块 → `src/stores/settings.ts` 的
+  `THEME_META` 登记 → `App.vue` 的 `HLJS_STYLES` 映射对应高亮样式
+
+## 安全说明
+
+- 本地图片经 Tauri asset 协议加载，文档目录外的文件系统访问被权限配置约束
+- 全部 `<a>` 外链统一拦截，经系统浏览器打开，避免 WebView 内导航
+- 原始 HTML 渲染默认开启（阅读器信任本地文档），可在设置中关闭

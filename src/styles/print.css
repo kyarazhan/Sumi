@@ -1,0 +1,52 @@
+/* 打印 / 另存为 PDF：只保留正文 */
+
+@media print {
+  body {
+    overflow: visible;
+    background: #fff;
+  }
+
+  .topbar,
+  .sidebar,
+  .toc-panel,
+  .statusbar,
+  .doc-bar,
+  .doc-search,
+  .overlay,
+  .drag-mask,
+  .code-copy {
+    display: none !important;
+  }
+
+  .app,
+  .app-main,
+  .viewer-pane,
+  .viewer-scroll {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .md-body {
+    max-width: none;
+    padding: 0;
+    font-size: 12pt;
+  }
+
+  .md-body pre,
+  .md-body blockquote,
+  .md-body table,
+  .md-body img {
+    break-inside: avoid;
+  }
+
+  .md-body h1,
+  .md-body h2,
+  .md-body h3 {
+    break-after: avoid;
+  }
+
+  .md-body a {
+    color: #0645ad;
+  }
+}
