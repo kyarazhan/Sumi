@@ -1,6 +1,0 @@
-# Table-fix bundle: mount the host half (a no-op cordis plugin) so the
-# client-modules scanner discovers this package's dsh.client declaration and
-# serves its browser bundle (lib/client.js), which injects the CSS fix.
-- insert:
-    - id: table-fix
-      name: 'dsh-table-fix'

@@ -1,9 +1,0 @@
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="4" y="6" width="28" height="24" rx="3" fill="#324DE2" fill-opacity="0.12"/>
-  <rect x="4" y="6" width="28" height="6" rx="3" fill="#324DE2" fill-opacity="0.45"/>
-  <line x1="14" y1="12" x2="14" y2="30" stroke="#324DE2" stroke-opacity="0.35"/>
-  <line x1="23" y1="12" x2="23" y2="30" stroke="#324DE2" stroke-opacity="0.35"/>
-  <line x1="4" y1="18" x2="32" y2="18" stroke="#324DE2" stroke-opacity="0.35"/>
-  <line x1="4" y1="24" x2="32" y2="24" stroke="#324DE2" stroke-opacity="0.35"/>
-  <text x="9" y="23" font-size="7" font-family="sans-serif" fill="#324DE2">任</text>
-</svg>
