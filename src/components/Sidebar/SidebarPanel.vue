@@ -84,18 +84,22 @@ function favToggle(path: string, e: Event) {
           v-for="f in library.folders"
           :key="f.path"
           class="chip"
-          :class="{ active: f.path === library.activeFolder }"
-          :title="f.path"
+          :class="{ active: f.path === library.activeFolder, missing: f.path === library.missing }"
+          :title="f.path === library.missing ? `${f.path}（已不存在）` : f.path"
           @click="library.setActiveFolder(f.path)"
         >
-          <span class="chip-name">📚 {{ f.name }}</span>
+          <span class="chip-name">{{ f.path === library.missing ? "⚠️ " : "📚 " }}{{ f.name }}</span>
           <span class="chip-x" title="从书架移除" @click="removeFolder(f.path, $event)">✕</span>
         </button>
       </div>
 
       <input class="side-filter" v-model="filterQ" placeholder="按文件名过滤…" />
 
-      <div v-if="library.error" class="side-note err">{{ library.error }}</div>
+      <div v-if="library.missing" class="side-note err">
+        书架「{{ library.folders.find((f) => f.path === library.missing)?.name ?? library.missing }}」已不存在（可能被移动或删除）。<br />
+        恢复原路径，或点条目上的 ✕ 移除后重新添加。
+      </div>
+      <div v-else-if="library.error" class="side-note err">{{ library.error }}</div>
       <div v-else-if="!library.activeFolder" class="side-note">
         书架空空如也。<br />添加一个文件夹，或直接把文件夹<b>拖进窗口</b>。
       </div>

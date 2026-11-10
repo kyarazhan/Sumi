@@ -293,6 +293,12 @@ kbd {
   border-color: var(--border);
 }
 
+/* 书架失效条目：目录被移动/删除后置灰虚线显示 */
+.chip.missing {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
 .chip-name {
   overflow: hidden;
   text-overflow: ellipsis;

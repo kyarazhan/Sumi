@@ -1,6 +1,6 @@
 [package]
 name = "md-reader"
-version = "0.2.1"
+version = "0.3.0"
 description = "墨阅 Sumi — 轻量级 Markdown 桌面阅读器与文档库"
 authors = ["MD Reader"]
 edition = "2021"

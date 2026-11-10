@@ -111,6 +111,18 @@ export function createEngine(cfg: EngineConfig) {
     return defaultImage(tokens, idx, opts, env, self);
   };
 
+  // ---------- 表格外包裹：列宽按内容自然分布，窄容器转为横向滚动而非挤压 ----------
+  const defaultTableOpen =
+    md.renderer.rules.table_open ??
+    ((tokens, idx, opts, _env, self) => self.renderToken(tokens, idx, opts));
+  const defaultTableClose =
+    md.renderer.rules.table_close ??
+    ((tokens, idx, opts, _env, self) => self.renderToken(tokens, idx, opts));
+  md.renderer.rules.table_open = (tokens, idx, opts, env, self) =>
+    `<div class="table-wrap">` + defaultTableOpen(tokens, idx, opts, env, self);
+  md.renderer.rules.table_close = (tokens, idx, opts, env, self) =>
+    defaultTableClose(tokens, idx, opts, env, self) + `</div>`;
+
   // ---------- 插件注册表 ----------
   if (o.anchors) {
     md.use(asPlugin(anchor) as typeof anchor, { slugify, permalink: false });

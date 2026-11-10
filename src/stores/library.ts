@@ -10,6 +10,8 @@ const MAX_RECENT = 30;
 interface LibraryState {
   folders: LibraryFolder[];
   activeFolder: string | null;
+  /** 当前激活文件夹已失效（被移动/删除）的路径，用于侧栏失联标记 */
+  missing: string | null;
   tree: FileNode[];
   recent: RecentEntry[];
   favorites: string[];
@@ -67,6 +69,7 @@ function stripExt(name: string): string {
 export const useLibraryStore = defineStore("library", {
   state: (): LibraryState => ({
     tree: [],
+    missing: null,
     loading: false,
     error: null,
     _watch: null,
@@ -153,10 +156,17 @@ export const useLibraryStore = defineStore("library", {
       if (!this.activeFolder) return;
       this.loading = true;
       this.error = null;
+      this.missing = null;
       try {
         this.tree = await bridge.readDirTree(this.activeFolder);
       } catch (e) {
-        this.error = `读取目录失败：${String(e)}`;
+        const msg = String(e);
+        if (/os error (2|3)|cannot find|not found|no such|找不到|不存在/i.test(msg)) {
+          // 目录已被移动/删除：标记失联（侧栏置灰），不再每次启动弹原始报错
+          this.missing = this.activeFolder;
+        } else {
+          this.error = `读取目录失败：${msg}`;
+        }
         this.tree = [];
       } finally {
         this.loading = false;

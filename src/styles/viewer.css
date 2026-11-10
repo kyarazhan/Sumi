@@ -55,12 +55,14 @@
 .md-body {
   max-width: var(--md-content-width, 820px);
   margin: 0 auto;
-  padding: 28px 40px 40vh;
+  /* 左右内边距随容器宽度收缩（分栏窄栏时保留更多可读宽度） */
+  padding: 28px clamp(16px, 5%, 40px) 40vh;
   font-family: var(--md-font-family, inherit);
   font-size: var(--md-font-size, 17px);
   line-height: var(--md-line-height, 1.75);
   color: var(--fg);
   word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .md-body h1,
@@ -112,8 +114,11 @@
   font-weight: 650;
 }
 
-.md-body img.md-img {
+.md-body img {
   max-width: 100%;
+}
+
+.md-body img.md-img {
   border-radius: 6px;
   cursor: zoom-in;
 }
@@ -129,6 +134,7 @@
   border: 1px solid var(--code-border);
   border-radius: 5px;
   padding: 0.14em 0.42em;
+  overflow-wrap: anywhere;
 }
 
 .md-body pre {
@@ -237,20 +243,32 @@
   padding-left: 1.2em;
 }
 
-/* 表格 */
+/* 表格：外层容器负责横向滚动，表格按内容自然宽度布局。
+   窄容器（分栏/小窗口）下列宽不再被挤压成单字竖排——这是 CJK 表格的常见问题：
+   CSS 自动列宽允许在任意汉字间断行，列被压到 1 字宽也不会触发滚动。 */
 .md-body table {
   border-collapse: collapse;
-  margin: 1em 0;
-  display: block;
-  max-width: 100%;
-  overflow: auto;
   font-size: 0.92em;
+}
+
+.md-body .table-wrap {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.md-body .table-wrap table {
+  display: table;
+  width: max-content;
+  /* 极宽表格（超长内容列）封顶，内部按比例折行而非无限拉长 */
+  max-width: 72em;
+  margin: 0;
 }
 
 .md-body th,
 .md-body td {
   border: 1px solid var(--border);
   padding: 6px 14px;
+  overflow-wrap: anywhere;
 }
 
 .md-body th {

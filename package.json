@@ -1,7 +1,7 @@
 {
   "name": "md-reader",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "墨阅 Sumi — 轻量级 Markdown 桌面阅读器与文档库",
   "type": "module",
   "scripts": {
